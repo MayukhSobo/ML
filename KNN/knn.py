@@ -11,8 +11,8 @@ class KNN(Gather):
     it in testing and traing sections. 
     """
     def __init__(self, path, colnames=None, typ='csv', **kwargs):
-        # Use of self.__class__ was giving linter error
-        super(KNN, self).__init__(path, colnames, typ)
+        # Use of self.__class__ was giving linter error but it's no big deal
+        super(self.__class__, self).__init__(path, colnames, typ)
         label = kwargs.get('label', None)
         n_rounds = kwargs.get('n_rounds', 10)
         copy = kwargs.get('copy', False)
