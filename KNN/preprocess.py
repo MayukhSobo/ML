@@ -3,7 +3,7 @@ import numpy as np
 from math import ceil
 from warnings import warn
 
-class Gather:
+class Gather(object):
     """
     Gather module collects all the
     data passed through its constructor
@@ -129,9 +129,11 @@ class Gather:
         
         # Split and Shuffle the dataset
         if not copy:
+            # Use the same dataset
             self._shuffle(n_rounds, copy)
-            self._split(split_ratio, dataset=None)
+            self._split(split_ratio)
         else:
+            # Create a new dataset
             shuffled_data = self._shuffle(n_rounds, copy)
             self._split(split_ratio, shuffled_data)
         
