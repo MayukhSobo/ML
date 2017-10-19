@@ -147,12 +147,12 @@ class Gather(object):
         else:
             return X_train, X_test, y_train, y_test
 
-def main(path, cols=None):
-    """
-    The main calling method
-    """
-    gather = Gather(path, cols)
-    a, b, c, d = gather.train_test_split(label='species')
+# def main(path, cols=None):
+#     """
+#     The main calling method
+#     """
+#     gather = Gather(path, cols)
+#     a, b, c, d = gather.train_test_split(label='species')
 # if __name__ == '__main__':
 #     pth = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 #     cols = [
