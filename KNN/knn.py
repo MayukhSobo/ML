@@ -1,17 +1,17 @@
-import numpy as np
-import pandas as pd
+# import numpy as np
+# import pandas as pd
 from preprocess import Gather
 
 
 class KNN(Gather):
     """
-    Class to impplement the basic KNN prediction
+    Class to implement the basic KNN prediction
     on the dataset. It inherits the ```Gather```
     class to collect and process the data an split
-    it in testing and traing sections. 
+    it in testing and training sections.
+
     """
     def __init__(self, path, colnames=None, typ='csv', **kwargs):
-        # Use of self.__class__ was giving linter error but it's no big deal
         super(self.__class__, self).__init__(path, colnames, typ)
         label = kwargs.get('label', None)
         n_rounds = kwargs.get('n_rounds', 10)
@@ -42,7 +42,7 @@ def main(path, cols=None):
 if __name__ == '__main__':
     pth = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
     cols = [
-        'sepal_legth',
+        'sepal_length',
         'sepal_width',
         'petal_length',
         'petal_width',

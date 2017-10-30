@@ -1,13 +1,14 @@
-import pandas as pd # For all data processing
+import pandas as pd  # For all data processing
 import numpy as np
 from math import ceil
 from warnings import warn
+
 
 class Gather(object):
     """
     Gather module collects all the
     data passed through its constructor
-    and performs the following opertations.
+    and performs the following operations.
         1. Head (n = 5)
         2. Tail (n = 5)
         3. Size (Rows and Columns)
@@ -98,6 +99,7 @@ class Gather(object):
         two parts for training and testing
         to avoid overfitting after ML fitting.
         """
+        # Pycharm Linter gives unnecessary warning here. Please ignore!
         if not isinstance(dataset, pd.core.frame.DataFrame):
             dataSet = self._data
         else:
@@ -156,7 +158,7 @@ class Gather(object):
 # if __name__ == '__main__':
 #     pth = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 #     cols = [
-#         'sepal_legth',
+#         'sepal_length',
 #         'sepal_width',
 #         'petal_length',
 #         'petal_width',
