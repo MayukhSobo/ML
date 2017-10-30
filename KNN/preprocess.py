@@ -2,9 +2,11 @@ import pandas as pd  # For all data processing
 import numpy as np
 from math import ceil
 from warnings import warn
+from abc import ABC
+from abc import abstractmethod
 
 
-class Gather(object):
+class Gather(ABC):
     """
     Gather module collects all the
     data passed through its constructor
@@ -149,19 +151,7 @@ class Gather(object):
         else:
             return X_train, X_test, y_train, y_test
 
-# def main(path, cols=None):
-#     """
-#     The main calling method
-#     """
-#     gather = Gather(path, cols)
-#     a, b, c, d = gather.train_test_split(label='species')
-# if __name__ == '__main__':
-#     pth = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
-#     cols = [
-#         'sepal_length',
-#         'sepal_width',
-#         'petal_length',
-#         'petal_width',
-#         'species'
-#     ]
-#     main(pth, cols)
+    @abstractmethod
+    def dispatcher(self, kind=None, prediction_mode='absolute', classification=True):
+        # Currently ensembles are not supported
+        pass

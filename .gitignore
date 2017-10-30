@@ -3,3 +3,4 @@ py3/
 .DS_Store
 __pycache__/
 .idea/
+data.csv
