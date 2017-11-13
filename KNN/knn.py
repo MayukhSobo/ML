@@ -1,5 +1,11 @@
 from preprocess import Gather
 import numpy as np
+from Utils import euclidean_distance
+from operator import itemgetter
+from KNN import VERBOSE
+if VERBOSE:
+    from tqdm import tqdm
+    from time import sleep
 
 
 class KNN(Gather):
@@ -28,62 +34,96 @@ class KNN(Gather):
         if not label or label == '':
             raise ValueError('No Label!! Unsupervised problems are Unknown!')
         KNN.X_train, KNN.X_test, KNN.y_train, KNN.y_test = self.train_test_split(label,
-                                                                                    n_rounds, 
-                                                                                    copy, 
-                                                                                    split_ratio, 
-                                                                                    reject_cols, 
-                                                                                    numpy_array)
+                                                                                 n_rounds,
+                                                                                 copy,
+                                                                                 split_ratio,
+                                                                                 reject_cols,
+                                                                                 numpy_array)
 
-    def dispatcher(self, kind=None, prediction_mode='absolute', classification=True):
+    def apply(self, kind='KNN', prediction_mode='absolute', classification=True):
         """
-        This is the generics dispatcher function overloaded from
+        This is the generic dispatcher function overloaded from
         the Abstract Base Class (Gather) to implement any algorithm
         for Machine Learning Prediction
         Only KNN specific parameter options are supported.
         Prediction mode: absolute only
-        Classification: True always
+        Classification: True for now
 
-        :param X_train: Features dataset for training -> np.ndarray
-        :param X_test: Features for testing -> np.ndarray
-        :param y_train: Labels for training -> np.array
-        :param y_test: Labels for testing -> np.array
         :param kind: 'KNN' (constant) -> str
         :param prediction_mode: 'absolute' (constant) -> str
         :param classification: True (constant) -> boolean
-        :return: predictions & eval metric information
+        :return: predictions
         """
+
+        # // TODO Regression needs to implemented
 
         if kind != 'KNN':
             # Dispatcher for KNN should only get kind=KNN
-            raise AttributeError("Dispatcher in KNN got incorrect 'kind'")
+            error_msg = "Dispatcher in KNN got incorrect 'kind'"
+            raise AttributeError(error_msg)
 
         if prediction_mode != 'absolute':
-            raise AttributeError('Currently KNN only supports absolute prediction mode')
+            error_msg = 'Currently KNN only supports absolute prediction mode'
+            raise AttributeError(error_msg)
 
         if not classification:
-            raise AttributeError('KNN can only be used for Classification')
+            raise AttributeError('OOPS!! No support for regression yet!!')
 
         if KNN.X_train.shape[1] != KNN.X_test.shape[1]:
             raise AttributeError('Test and train dataset are not of same dimension')
 
         if (KNN.y_train.shape[0] != KNN.X_train.shape[0]) or (KNN.y_test.shape[0] != KNN.X_test.shape[0]):
-            raise AttributeError('Test and/or train samples may not have properly matched labels')
+            error_msg = 'Test and/or train samples may not have properly matched labels'
+            raise AttributeError(error_msg)
 
         KNN.fit_transform(self.k)
 
+    @staticmethod
+    def _fit_for_point(instance, k):
+        """
+        Fits the KNN model for one instance.
+        This applies the KNN to a particular
+        point and returns the predicted class
+        label in case of classification.
+
+        :param instance: One test instance -> np.array
+        :return: Returns the predicted class
+        """
+
+        distances = []
+        top_k_neighbours = []
+        # KNN.X_train[:, -1] = KNN.y_train
+        # print(KNN.X_train)
+        for each_train_point in KNN.X_train:
+            points = np.array([
+               instance,
+               each_train_point
+            ])
+
+            # Each train point with its distance for test instance
+            # each_data_point -> ([1., 2., 3., 4], 7.0)
+            data_points = each_train_point, euclidean_distance(points)
+
+            # Storing them so it can be used afterwards
+            distances.append(data_points)
+
+            # Sorting data points in increasing order
+            # Sort based on the Euclidean distance
+            distances.sort(key=itemgetter(1))
+
+            top_k_neighbours = np.array([train_point[0] for train_point in distances[0:k]])
 
     @staticmethod
     def fit_transform(k):
 
-        def euclidean_distance(data_points):
-            assert len(data_points) == 2
-            return np.sqrt(np.sum((data_points[0] - data_points[1]) ** 2))
+        # Get all the test instances
+        test_instances = KNN.X_test
 
-        oneTestInstance = KNN.X_test[0]
-        for each_train_points in KNN.X_train:
-            dp = np.array([
-                oneTestInstance,
-                each_train_points
-            ])
-            print(euclidean_distance(dp))
-
+        # Apply KNN on each instance & get prediction
+        if VERBOSE:
+            for instance in tqdm(test_instances, ncols=100):
+                KNN._fit_for_point(instance=instance, k=k)
+                sleep(0.01)
+        else:
+            for instance in test_instances:
+                KNN._fit_for_point(instance=instance, k=k)

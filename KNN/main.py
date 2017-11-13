@@ -14,7 +14,7 @@ def main(path):
         'species'
     ]
     knn = KNN(k=3, path=path, colnames=cols, **data_params)
-    knn.dispatcher(kind='KNN')
+    knn.apply()
 
 
 if __name__ == '__main__':
