@@ -1,9 +1,9 @@
-import pandas as pd  # For all data processing
-import numpy as np
+from abc import ABC, abstractmethod
 from math import ceil
 from warnings import warn
-from abc import ABC
-from abc import abstractmethod
+
+import numpy as np
+import pandas as pd  # For all data processing
 
 
 class Gather(ABC):

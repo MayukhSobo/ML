@@ -5,7 +5,7 @@ of any Machine Learning logic but not associated
 to any particular technique.
 """
 
-import  numpy as np
+import numpy as np
 
 
 def euclidean_distance(data_points):

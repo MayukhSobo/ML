@@ -1,5 +1,6 @@
-from knn import KNN
 import sys
+
+from knn import KNN
 
 
 def main(path):

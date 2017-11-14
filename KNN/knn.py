@@ -1,8 +1,11 @@
-from preprocess import Gather
-import numpy as np
-from Utils import euclidean_distance
 from operator import itemgetter
+
+import numpy as np
+
 from KNN import VERBOSE
+from preprocess import Gather
+from Utils import euclidean_distance
+
 if VERBOSE:
     from tqdm import tqdm
     from time import sleep
@@ -70,8 +73,8 @@ class KNN(Gather):
             raise AttributeError('OOPS!! No support for regression yet!!')
 
         if KNN.X_train.shape[1] != KNN.X_test.shape[1]:
-            raise AttributeError('Test and train dataset are not of same dimension')
-
+            error_msg = 'Test and train dataset are not of same dimension'
+            raise AttributeError(error_msg)
         if (KNN.y_train.shape[0] != KNN.X_train.shape[0]) or (KNN.y_test.shape[0] != KNN.X_test.shape[0]):
             error_msg = 'Test and/or train samples may not have properly matched labels'
             raise AttributeError(error_msg)
@@ -96,8 +99,8 @@ class KNN(Gather):
         # print(KNN.X_train)
         for each_train_point in KNN.X_train:
             points = np.array([
-               instance,
-               each_train_point
+                instance,
+                each_train_point
             ])
 
             # Each train point with its distance for test instance
